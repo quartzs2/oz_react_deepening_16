@@ -19,37 +19,30 @@ const Todo = () => {
                 createdAt: new Date(),
             };
 
-            setTodos([...todos, newTodo]);
+            setTodos((prevTodos) => [...prevTodos, newTodo]);
         },
-        [generateId, todos],
+        [generateId],
     );
 
-    const handleToggle = useCallback(
-        (id) => {
-            setTodos(todos.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)));
-        },
-        [todos],
-    );
+    const handleToggle = useCallback((id) => {
+        setTodos((prevTodos) =>
+            prevTodos.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)),
+        );
+    }, []);
 
-    const handleDelete = useCallback(
-        (id) => {
-            setTodos(todos.filter((todo) => todo.id !== id));
-        },
-        [todos],
-    );
+    const handleDelete = useCallback((id) => {
+        setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+    }, []);
 
-    const handleEdit = useCallback(
-        (id, newText) => {
-            setTodos(todos.map((todo) => (todo.id === id ? { ...todo, text: newText } : todo)));
-        },
-        [todos],
-    );
+    const handleEdit = useCallback((id, newText) => {
+        setTodos((prevTodos) => prevTodos.map((todo) => (todo.id === id ? { ...todo, text: newText } : todo)));
+    }, []);
 
     const handleFilterChange = useCallback((newFilter) => {
         setFilter(newFilter);
     }, []);
 
-    const getFilteredTodos = useCallback(() => {
+    const filteredTodos = useMemo(() => {
         switch (filter) {
             case 'active':
                 return todos.filter((todo) => !todo.completed);
@@ -59,8 +52,6 @@ const Todo = () => {
                 return todos;
         }
     }, [filter, todos]);
-
-    const filteredTodos = useMemo(() => getFilteredTodos(), [getFilteredTodos]);
 
     return (
         <div className="max-w-xl mx-auto p-5">

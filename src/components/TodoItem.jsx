@@ -12,7 +12,7 @@ const TodoItem = React.memo(({ todo, onToggle, onDelete, onEdit }) => {
         const editText = textRef.current.value;
         onEdit(todo.id, editText);
         setIsEditing(false);
-    }, [onEdit, todo.id, setIsEditing]);
+    }, [onEdit, todo.id]);
 
     return (
         <div className={`flex items-center p-2.5 border-b border-gray-200 ${todo.completed ? 'bg-gray-50' : ''}`}>
